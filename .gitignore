@@ -1,0 +1,9 @@
+node_modules
+.env
+.env.production
+dist
+.keys
+logs
+Dockerfile
+scripts/deploy_staging.sh
+*.old*
