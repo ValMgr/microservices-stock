@@ -1,7 +1,7 @@
 /* eslint-disable */
 namespace Express {
   interface Request {
-    products: [],
+    products: StockProductDto[],
     
   }
 }

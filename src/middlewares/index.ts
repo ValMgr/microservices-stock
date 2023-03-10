@@ -5,7 +5,7 @@ import { reservation } from '../db/reservation';
 import { stock } from '../db/stock';
 
 export const getStock = async (req, res, next) => {
-  req.products = stock;
+  req.products = Array.from(stock, ([productId, quantity]) => ({ productId, quantity }));
 
   next();
 };
@@ -80,4 +80,15 @@ export const checkMovement = async (req, res, next) => {
     default:
       return res.status(400).json({ error: 'Invalid movement' });
   }
+};
+
+export const checkId = async (req, res, next) => {
+  const { id } = req.params;
+  const { productId } = req.body as StockMovementDto;
+
+  if (id !== productId) {
+    return res.status(400).json({ error: 'Invalid product id' });
+  }
+
+  return next();
 };
