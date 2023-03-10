@@ -20,9 +20,9 @@ const addStock = async (req, res, next) => {
     return next();
   }
 
-  const checkProduct = await axios.get(
-    `http://microservices.tp.rjqu8633.odns.fr/api/products/${productId}`,
-  );
+  const checkProduct = await axios
+    .get(`http://microservices.tp.rjqu8633.odns.fr/api/products/${productId}`)
+    .catch(() => ({ data: null }));
 
   if (!checkProduct.data) {
     return res.status(400).json({ error: 'Product not found' });
