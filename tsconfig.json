@@ -9,15 +9,13 @@
     "moduleResolution": "node",
     "baseUrl": "src",
     "paths": {
+      "@types/*": ["@types/*"],
       "@core/*": ["core/*"],
-      "@services/*": ["services/*"]
+      "@services/*": ["services/*"],
+      "types/*": ["types/*"],
     },
     "rootDir": "src",
-    "typeRoots": [
-      "src/@types",
-      "./node_modules/@types",
-      "src/**/*.d.ts"
-    ],
+    "typeRoots": ["src/@types", "./node_modules/@types", "src/**/*.d.ts"],
     "outDir": "./dist",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

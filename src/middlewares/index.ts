@@ -1,16 +1,21 @@
 import axios from 'axios';
+import { Request, Response, NextFunction } from 'express';
 
-import { StockMovementDto } from 'types/req/stock';
+import { StockMovementDto, StockProductDto } from 'types/stock';
 import { reservation } from '../db/reservation';
 import { stock } from '../db/stock';
+import { supplyNeeded } from '../utils/supply';
 
-export const getStock = async (req, res, next) => {
-  req.products = Array.from(stock, ([productId, quantity]) => ({ productId, quantity }));
+export const getStock = async (req: Request, res: Response, next: NextFunction) => {
+  req.products = Array.from(
+    stock,
+    ([productId, quantity]) => ({ productId, quantity } as StockProductDto),
+  );
 
   next();
 };
 
-const addStock = async (req, res, next) => {
+const addStock = async (req: Request, res: Response, next: NextFunction) => {
   const { productId, quantity } = req.body as StockMovementDto;
 
   if (stock.has(productId)) {
@@ -32,7 +37,7 @@ const addStock = async (req, res, next) => {
   return next();
 };
 
-const reserveStock = async (req, res, next) => {
+const reserveStock = async (req: Request, res: Response, next: NextFunction) => {
   const { productId, quantity } = req.body as StockMovementDto;
 
   if (stock.has(productId)) {
@@ -44,13 +49,14 @@ const reserveStock = async (req, res, next) => {
       return next();
     }
 
+    supplyNeeded(productId);
     return res.status(400).json({ error: 'Not enough stock' });
   }
 
   return res.status(400).json({ error: 'Product not found' });
 };
 
-const removeStock = async (req, res, next) => {
+const removeStock = async (req: Request, res: Response, next: NextFunction) => {
   const { productId, quantity } = req.body as StockMovementDto;
 
   if (reservation.has(productId)) {
@@ -67,7 +73,7 @@ const removeStock = async (req, res, next) => {
   return res.status(400).json({ error: 'Product not found' });
 };
 
-export const checkMovement = async (req, res, next) => {
+export const checkMovement = async (req: Request, res: Response, next: NextFunction) => {
   const { status } = req.body as StockMovementDto;
 
   switch (status) {
@@ -82,7 +88,7 @@ export const checkMovement = async (req, res, next) => {
   }
 };
 
-export const checkId = async (req, res, next) => {
+export const checkId = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   const { productId } = req.body as StockMovementDto;
 

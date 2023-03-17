@@ -1,8 +1,7 @@
 /* eslint-disable */
 namespace Express {
   interface Request {
-    products: StockProductDto[],
-    
+    products: { productId: string; quantity: number }[];
   }
 }
 /* eslint-enable */
